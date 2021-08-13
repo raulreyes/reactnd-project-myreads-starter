@@ -1,9 +1,9 @@
-import React from 'react'
-import BookList from './BookList'
+import React, { Component } from 'react'
 import * as BooksAPI from './BooksAPI'
+import BookList from './BookList'
 import './App.css'
 
-class BooksApp extends React.Component {
+class BooksApp extends Component {
   state = {
     /**
      * TODO: Instead of using this state variable to keep track of which page
@@ -11,13 +11,13 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-     books: [],
-     showSearchPage: false
-   }
- 
-   componentDidMount(){
-     BooksAPI.getAll().then((books) => {this.setState(() => ({ books }))})
-   }
+    books: [],
+    showSearchPage: false
+  }
+
+  componentDidMount(){
+    BooksAPI.getAll().then((books) => {this.setState(() => ({ books }))})
+  }
 
   render() {
     return (
@@ -44,7 +44,9 @@ class BooksApp extends React.Component {
             </div>
           </div>
         ) : (
-          <BookList />
+          < BookList 
+          books={this.state.books}
+          />
         )}
       </div>
     )
