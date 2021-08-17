@@ -1,12 +1,32 @@
 import React, { Component } from 'react'
+//import { updateStatement } from 'typescript'
+import * as BooksAPI from './BooksAPI'
 import Shelf from './Shelf'
 
 class BookList extends Component {
+    state = {
+        books: []
+    }
+    componentDidMount(){
+        BooksAPI.getAll().then((books) => {this.setState(() => ({ books }))})
+      }
+
+    updateState(book,shelf){
+        this.setState()
+    }
+    
+    handleChange = (book, shelf) => {
+        BooksAPI.update(book, shelf);
+        this.setState(({ books }) => ({
+           books: [...books.filter(({ id }) => id !== book.id), { ...book, shelf }],
+         }));
+    }
+   
 
 render () {
-    const currentlyReading = this.props.books.filter(shelf => shelf.shelf === 'currentlyReading')
-    const wantToRead = this.props.books.filter(shelf => shelf.shelf === 'wantToRead')
-    const read = this.props.books.filter(shelf => shelf.shelf === 'read')
+    const currentlyReading = this.state.books.filter(shelf => shelf.shelf === 'currentlyReading')
+    const wantToRead = this.state.books.filter(shelf => shelf.shelf === 'wantToRead')
+    const read = this.state.books.filter(shelf => shelf.shelf === 'read')
 
     return (
         <div className="list-books">
@@ -18,14 +38,17 @@ render () {
                     <Shelf
                     title="Currently Reading"
                     books={currentlyReading}
+                    onShelfChange={this.handleChange}
                     />
                     <Shelf
                     title="Want To Read"
                     books={wantToRead}
+                    onShelfChange={this.handleChange}
                     />
                     <Shelf
                     title="Read"
                     books={read}
+                    onShelfChange={this.handleChange}
                     />
                 </div>
             </div>

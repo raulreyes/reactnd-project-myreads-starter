@@ -4,20 +4,22 @@ import React, { Component } from 'react'
 
 class Shelf extends Component {
 
+
 render () {
-    const { title, books } = this.props
+    const { title, books, onShelfChange } = this.props
+
     return (
         <div className="bookshelf">
             <h2 className="bookshelf-title">{title}</h2>
             <div className="bookshelf-books">
                 <ol className="books-grid">
                     {books.map((book) => (
-                     <li>
+                     <li key={book.id}>
                     <div className="book">
                         <div className="book-top">
                             <div className="book-cover" style={{ width: 128, height: 174, backgroundImage:  `url(${book.imageLinks.smallThumbnail})` }}></div>
                             <div className="book-shelf-changer">
-                                <select>
+                                <select value={book.shelf} onChange={(e) => onShelfChange(e.target.value, book)}>
                                 <option value="move" disabled>Move to...</option>
                                 <option value="currentlyReading">Currently Reading</option>
                                 <option value="wantToRead">Want to Read</option>
@@ -33,7 +35,7 @@ render () {
                     </div>
                     </li> 
                     )
-                )}q
+                )}
                 </ol>
                             </div>
         </div>
