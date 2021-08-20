@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 //import { updateStatement } from 'typescript'
 import * as BooksAPI from './BooksAPI'
 import Shelf from './Shelf'
@@ -11,15 +12,12 @@ class BookList extends Component {
         BooksAPI.getAll().then((books) => {this.setState(() => ({ books }))})
       }
 
-    updateState(book,shelf){
-        this.setState()
-    }
-    
     handleChange = (book, shelf) => {
         BooksAPI.update(book, shelf);
         this.setState(({ books }) => ({
            books: [...books.filter(({ id }) => id !== book.id), { ...book, shelf }],
          }));
+         console.log(this.state.books);
     }
    
 
@@ -53,7 +51,7 @@ render () {
                 </div>
             </div>
             <div className="open-search">
-                <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
+                <Link to="/search">Add a book</Link>
             </div>
         </div>
     )
