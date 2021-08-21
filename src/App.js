@@ -38,14 +38,15 @@ class BooksApp extends Component {
             />
           )} 
           />
-          <Route exact path="/search"  render={({ history }) => (
+          <Route path="/search" render={() => (
             <Search
-              // history={history.push('/')}
+            books={this.state.books} 
+            onShelfUpdate={this.handleChange}
             />
           )}
           />
       </div>
-    )
+    );
   }
 }
 

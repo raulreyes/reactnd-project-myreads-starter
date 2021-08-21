@@ -1,17 +1,10 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 //import { updateStatement } from 'typescript'
-import * as BooksAPI from './BooksAPI'
+//import * as BooksAPI from './BooksAPI'
 import Shelf from './Shelf'
 
 class BookList extends Component {
-    // state = {
-    //     books: []
-    // }
-    // componentDidMount(){
-    //     BooksAPI.getAll().then((books) => {this.setState(() => ({ books }))})
-    //   }
-
    
 
 render () {
