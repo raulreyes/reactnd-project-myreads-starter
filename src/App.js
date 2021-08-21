@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './BooksAPI'
 import BookList from './BookList'
 import Search from './Search'
 import { Route } from 'react-router-dom';
@@ -14,15 +14,28 @@ class BooksApp extends Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
      //showSearchPage: false
+     books: []
   }
 
-  history
+  componentDidMount(){
+    BooksAPI.getAll().then((books) => {this.setState(() => ({ books }))})
+  }
+
+  handleChange = (book, shelf) => {
+    BooksAPI.update(book, shelf);
+    this.setState(({ books }) => ({
+       books: [...books.filter(({ id }) => id !== book.id), { ...book, shelf }],
+     }));
+}
 
   render() {
     return (
       <div className="app">
           <Route exact path="/" render={() => (
-            < BookList />
+            < BookList 
+            books={this.state.books} 
+            onShelfUpdate={this.handleChange}
+            />
           )} 
           />
           <Route exact path="/search"  render={({ history }) => (

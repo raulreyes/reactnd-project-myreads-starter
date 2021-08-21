@@ -5,26 +5,20 @@ import * as BooksAPI from './BooksAPI'
 import Shelf from './Shelf'
 
 class BookList extends Component {
-    state = {
-        books: []
-    }
-    componentDidMount(){
-        BooksAPI.getAll().then((books) => {this.setState(() => ({ books }))})
-      }
+    // state = {
+    //     books: []
+    // }
+    // componentDidMount(){
+    //     BooksAPI.getAll().then((books) => {this.setState(() => ({ books }))})
+    //   }
 
-    handleChange = (book, shelf) => {
-        BooksAPI.update(book, shelf);
-        this.setState(({ books }) => ({
-           books: [...books.filter(({ id }) => id !== book.id), { ...book, shelf }],
-         }));
-         console.log(this.state.books);
-    }
    
 
 render () {
-    const currentlyReading = this.state.books.filter(shelf => shelf.shelf === 'currentlyReading')
-    const wantToRead = this.state.books.filter(shelf => shelf.shelf === 'wantToRead')
-    const read = this.state.books.filter(shelf => shelf.shelf === 'read')
+    const { books, onShelfUpdate } = this.props
+    const currentlyReading = books.filter(shelf => shelf.shelf === 'currentlyReading')
+    const wantToRead = books.filter(shelf => shelf.shelf === 'wantToRead')
+    const read = books.filter(shelf => shelf.shelf === 'read')
 
     return (
         <div className="list-books">
@@ -36,17 +30,17 @@ render () {
                     <Shelf
                     title="Currently Reading"
                     books={currentlyReading}
-                    onShelfChange={this.handleChange}
+                    onShelfChange={onShelfUpdate}
                     />
                     <Shelf
                     title="Want To Read"
                     books={wantToRead}
-                    onShelfChange={this.handleChange}
+                    onShelfChange={onShelfUpdate}
                     />
                     <Shelf
                     title="Read"
                     books={read}
-                    onShelfChange={this.handleChange}
+                    onShelfChange={onShelfUpdate}
                     />
                 </div>
             </div>
