@@ -37,9 +37,7 @@ render () {
                     />
                 </div>
             </div>
-            <div className="open-search">
-                <Link to="/search">Add a book</Link>
-            </div>
+            <Link to="/search" className="open-search">Add a book</Link>
         </div>
     )
 }
