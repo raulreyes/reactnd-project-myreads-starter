@@ -37,7 +37,7 @@ render () {
                     )
                 )}
                 </ol>
-                            </div>
+            </div>
         </div>
     )
 }
