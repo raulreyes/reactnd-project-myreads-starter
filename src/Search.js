@@ -31,19 +31,40 @@ clearQuery = () => {
     this.userQuery('')
 }
 
+
 displayBooks = (booksFound, books) => {
-  return booksFound.map((booksFound) => {
-    const index = books.findIndex((books) => books.id === booksFound.id);
-    index !== -1 ? (booksFound.shelf = books[index].shelf) : (booksFound.shelf = "none");
-    return booksFound
-
-  });
-
+  let allBooks = [...booksFound];
+  let myBooks = [...books];
+  
+  function checker(book) {
+    if (book.authors === undefined || book.imageLinks === undefined){
+      return false;
+    }
+    return true;
+  }
+  
+  for (let i = 0; i < myBooks.length; i++) {
+    const foundIndex = allBooks.findIndex(book => book.id === books[i].id);
+    if(foundIndex === -1){
+      allBooks = [...allBooks, books[i]]
+    } else {
+      allBooks[foundIndex].shelf = books[i].shelf
+    }
+  };
+  
+  let bookList = allBooks.filter(checker)
+  .map(book => {
+    if(!book.hasOwnProperty("shelf") || book.shelf === "") {
+      book.shelf = "none"
+    }
+    return book
+  })
+  return bookList
 }
+
     render() {
       const { query, booksFound, invalidTerm } = this.state
       const { books, onShelfUpdate } = this.props
-      console.log(this.state.booksFound)
 
       return (
           <div className="search-books">
@@ -70,14 +91,14 @@ displayBooks = (booksFound, books) => {
             </div>
             <div className="search-books-results">
               <ol className="books-grid">
-                    {this.displayBooks(booksFound,books).map((booksFound) => {
+                    {this.displayBooks(booksFound,books).map((books) => {
                         return (
-                        <li key={booksFound.id}>
+                        <li key={books.id}>
                         <div className="book">
                             <div className="book-top">
-                                <div className="book-cover" style={{ width: 128, height: 174, backgroundImage:  `url(${booksFound.imageLinks.smallThumbnail})` }}></div>
+                                <div className="book-cover" style={{ width: 128, height: 174, backgroundImage:  `url(${books.imageLinks.smallThumbnail})` }}></div>
                                 <div className="book-shelf-changer">
-                                    <select value={booksFound.shelf} onChange={(e) => onShelfUpdate(booksFound, e.target.value)}>
+                                    <select value={books.shelf} onChange={(e) => onShelfUpdate(books, e.target.value)}>
                                     <option value="move" disabled>Move to...</option>
                                     <option value="currentlyReading">Currently Reading</option>
                                     <option value="wantToRead">Want to Read</option>
@@ -86,9 +107,9 @@ displayBooks = (booksFound, books) => {
                                     </select>
                                 </div>
                             </div>
-                            <div className="book-title">{booksFound.title}</div>
+                            <div className="book-title">{books.title}</div>
                             <div className="book-authors">
-                            {/* {booksFound.authors.length>1 ? (booksFound.authors.join(', ')) : (booksFound.authors)} */}
+                            {books.authors.length>1 ? (books.authors.join(', ')) : (books.authors)}
                             </div>
                         </div>
                         </li> 
