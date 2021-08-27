@@ -11,13 +11,14 @@ class Search extends Component {
     invalidTerm: false,
 }
 
-userQuery = (query) => {
+userQuery = (query, books) => {
     let searchTerm = query.trim();
     this.setState({ query: query });
     if(query === ""){
       this.setState({ booksFound: [] });
       return;
     }
+    
     BooksAPI.search(searchTerm).then((queriedBooks) => {
       queriedBooks.error
       ?
@@ -45,9 +46,7 @@ displayBooks = (booksFound, books) => {
   
   for (let i = 0; i < myBooks.length; i++) {
     const foundIndex = allBooks.findIndex(book => book.id === books[i].id);
-    if(foundIndex === -1){
-      allBooks = [...allBooks, books[i]]
-    } else {
+    if(foundIndex !== -1){
       allBooks[foundIndex].shelf = books[i].shelf
     }
   };
@@ -83,15 +82,14 @@ displayBooks = (booksFound, books) => {
                   type="text"
                   placeholder="Search by title or author"
                   value={query}
-                  onChange={(event) => this.userQuery(event.target.value)}
-                  
+                  onChange={(event) => this.userQuery(event.target.value)}        
                 />
 
               </div>
             </div>
             <div className="search-books-results">
               <ol className="books-grid">
-                    {this.displayBooks(booksFound,books).map((books) => {
+                    {this.displayBooks(booksFound, books).map((books) => {
                         return (
                         <li key={books.id}>
                         <div className="book">
